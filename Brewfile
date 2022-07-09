@@ -90,7 +90,7 @@ brew "mecab"
 brew "mecab-ipadic"
 brew "multimarkdown"
 brew "nghttp2"
-brew "node"
+brew "nodebrew"
 brew "pandoc"
 brew "php", link: false
 brew "postgresql", restart_service: true
