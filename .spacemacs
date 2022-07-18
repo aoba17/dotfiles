@@ -89,11 +89,13 @@ values."
           lsp-enable-on-type-formatting nil
           lsp-file-watch-threshold 10000
           lsp-log-io nil
-          lsp-use-lsp-ui t)
+          lsp-use-lsp-ui t
+          lsp-ui-doc-enable nil
+          lsp-treemacs-sync-mode 1)
      (clojure :variables
               clojure-enable-sayid t
               clojure-enable-clj-refactor t
-              clojure-enable-fancify-symbols t
+              clojure-enable-fancify-symbols nil
               ;;clojure-enable-linters 'clj-kondo
               clojure-indent-style 'align-arguments
               clojure-align-forms-automatically t
@@ -113,6 +115,7 @@ values."
                treemacs-indent-guide-mode 'line)
      (version-control :variables
                       version-control-diff-tool 'diff-hl
+                      version-control-diff-side 'left
                       version-control-global-margin t)
      yaml
      nginx
@@ -132,7 +135,7 @@ values."
      rust
      (tabs :variables
            centaur-tabs-set-bar 'left
-           centaur-tabs-style "rounded")
+           centaur-tabs-style "bar")
      dap
      )
    ;; List of additional packages that will be installed without being
@@ -532,22 +535,7 @@ you should place your code here."
     :ensure t
     :hook ((clojure-mode . lsp-deferred)
            (clojurec-mode . lsp-deferred)
-           (clojurescript-mode . lsp-deferred))
-    :config
-    ;; add paths to your local installation of project mgmt tools, like lein
-    (setenv "PATH" (concat
-                    "/usr/local/bin" path-separator
-                    (getenv "PATH")))
-    (dolist (m '(clojure-mode
-                 clojurec-mode
-                 clojurescript-mode
-                 clojurex-mode))
-      (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
-    (setq lsp-clojure-server-command '("/usr/local/bin/clojure-lsp"))) ;; Optional: In case `clojure-lsp` is not in your $PATH
-
-  (use-package lsp-ui
-    :ensure t
-    :commands lsp-ui-mode)
+           (clojurescript-mode . lsp-deferred)))
 
   ;; magit forge
   (use-package forge
