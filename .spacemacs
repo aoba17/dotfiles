@@ -38,7 +38,6 @@ values."
      python
      ansible
      shell-scripts
-     octave
      ruby
      (typescript :variables
                  typescript-fmt-on-save t
@@ -76,20 +75,21 @@ values."
      (org :variables
           org-projectile-file "TODOs.org")
      (shell :variables
-            shell-default-shell 'multi-term
-            multi-term-program "/usr/local/bin/fish"
+            shell-default-shell 'vterm
+            shell-default-term-shell "/usr/local/bin/fish"
             shell-default-height 30
             shell-default-position 'bottom)
      (syntax-checking :variables
                       syntax-checking-enable-tooltips t
                       syntax-checking-enable-by-default t)
-     (lsp :valiables
+     (lsp :variables
           lsp-lens-enable t
           lsp-signature-auto-activate nil
           lsp-enable-indentation nil
           lsp-enable-on-type-formatting nil
           lsp-file-watch-threshold 10000
-          lsp-log-io nil)
+          lsp-log-io nil
+          lsp-use-lsp-ui t)
      (clojure :variables
               clojure-enable-sayid t
               clojure-enable-clj-refactor t
@@ -104,7 +104,13 @@ values."
               cider-repl-buffer-size-limit 10000)
      spell-checking
      (treemacs :variables
-               treemacs-use-all-the-icons-theme t)
+               treemacs-use-all-the-icons-theme t
+               treemacs-use-follow-mode 'tag
+               treemacs-use-filewatch-mode t
+               treemacs-use-scope-type 'Perspectives
+               treemacs-use-git-mode 'deferred
+               treemacs-git-commit-diff-mode t
+               treemacs-indent-guide-mode 'line)
      (version-control :variables
                       version-control-diff-tool 'diff-hl
                       version-control-global-margin t)
@@ -114,9 +120,9 @@ values."
      ansible
      ;;dash
      restclient
-     (colors :valiables
+     (colors :variables
              colors-colorize-identifiers 'all)
-     (php :valiables
+     (php :variables
           php-backend 'lsp)
      (terraform :variables
                 terraform-auto-format-on-save t
@@ -124,6 +130,10 @@ values."
      graphql
      japanese
      rust
+     (tabs :variables
+           centaur-tabs-set-bar 'left
+           centaur-tabs-style "rounded")
+     dap
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -486,7 +496,11 @@ you should place your code here."
    ("M-]" . sp-unwrap-sexp)
    ("M-[" . sp-backward-unwrap-sexp)
    ("C-M-]" . sp-select-next-thing)
-   ("C-M-[" . sp-select-previous-thing))
+   ("C-M-[" . sp-select-previous-thing)
+
+   :map centaur-tabs-mode-map
+   ("M-s-<left>" . centaur-tabs-backward)
+   ("M-s-<right>" . centaur-tabs-forward))
 
   ;; Font Setting
   (set-fontset-font
@@ -555,6 +569,12 @@ you should place your code here."
     (require 'avy-migemo-e.g.counsel))
   (remove-hook 'text-mode-hook 'pangu-spacing-mode)
 
+  ;; treemacs
+  (with-eval-after-load 'treemacs
+    (treemacs-define-RET-action 'file-node-closed #'treemacs-visit-node-ace)
+    (treemacs-define-RET-action 'file-node-open #'treemacs-visit-node-ace))
+  (setq aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9 ?0))
+
   ;; Other
   (custom-set-faces
    '(company-tooltip-common
@@ -608,7 +628,7 @@ This function is called at the very end of Spacemacs initialization."
  '(lsp-enable-indentation nil)
  '(lsp-enable-on-type-formatting nil)
  '(package-selected-packages
-   '(cargo counsel-gtags flycheck-rust ggtags racer ron-mode rust-mode toml-mode sql-indent yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic jinja2-mode company-ansible ansible-doc ansible yasnippet-snippets rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby company insert-shebang fish-mode company-shell yaml-mode nginx-mode xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help flycheck-pos-tip pos-tip unfill mwim mmm-mode markdown-toc markdown-mode git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md flyspell-correct-helm flyspell-correct diff-hl auto-dictionary tide typescript-mode flycheck web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode all-the-icons memoize smeargle reveal-in-osx-finder pbcopy osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download magit-gitflow magit-popup launchctl htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit transient git-commit with-editor clj-refactor inflections edn multiple-cursors paredit yasnippet peg cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))
+   '(dap-mode lsp-docker bui sql-indent yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic jinja2-mode company-ansible ansible-doc ansible yasnippet-snippets rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby company insert-shebang fish-mode company-shell yaml-mode nginx-mode xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help flycheck-pos-tip pos-tip unfill mwim mmm-mode markdown-toc markdown-mode git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md flyspell-correct-helm flyspell-correct diff-hl auto-dictionary tide typescript-mode flycheck web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode all-the-icons memoize smeargle reveal-in-osx-finder pbcopy osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download magit-gitflow magit-popup launchctl htmlize helm-gitignore gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit transient git-commit with-editor clj-refactor inflections edn multiple-cursors paredit yasnippet peg cider-eval-sexp-fu cider sesman queue parseedn clojure-mode parseclj a ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))
  '(safe-local-variable-values
    '((cider-default-cljs-repl . shadow)
      (cider-shadow-cljs-default-options . "app")))

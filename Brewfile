@@ -125,6 +125,7 @@ brew "clojure-lsp/brew/clojure-lsp-native"
 brew "clojure/tools/clojure"
 brew "d12frosted/emacs-plus/emacs-plus@28", args: ["with-spacemacs-icon"]
 brew "hashicorp/tap/terraform-ls"
+brew "libvterm"
 cask "adoptopenjdk8"
 cask "chromedriver"
 cask "cljstyle"
