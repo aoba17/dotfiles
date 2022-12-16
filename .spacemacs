@@ -145,7 +145,9 @@ This function should only modify configuration layer settings."
      (docker :variables docker-dockerfile-backend 'lsp)
      (go :variables
          go-backend 'lsp
-         go-tab-width 2)
+         go-tab-width 2
+         go-format-before-save t
+         go-use-golangci-lint t)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -698,6 +700,7 @@ you should place your code here."
   (add-hook 'cider-mode-hook #'cider-company-enable-fuzzy-completion)
   (add-hook 'clojure-mode-hook #'cider-hydra-mode)
   (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+  (add-hook 'go-mode-hook #'aggressive-indent-mode)
 
   ;; Keybindings
   (keyboard-translate ?\C-h ?\C-?)
